@@ -1,14 +1,12 @@
 #!/bin/bash
-# Build script for doc-scraper
+# Build script for scrape-llm
 
 set -e
 
-# Default values
 BUILD_TYPE="${BUILD_TYPE:-Debug}"
 BUILD_DIR="${BUILD_DIR:-build}"
 JOBS="${JOBS:-$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)}"
 
-# Parse arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
         --release)
@@ -39,27 +37,24 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-echo "=== Building doc-scraper ==="
+echo "=== Building scrape-llm ==="
 echo "Build type: ${BUILD_TYPE}"
 echo "Build directory: ${BUILD_DIR}"
 echo "Parallel jobs: ${JOBS}"
 echo ""
 
-# Create build directory
 mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
 
-# Configure
 echo "Configuring..."
 cmake .. \
     -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
     ${EXTRA_CMAKE_FLAGS}
 
-# Build
 echo "Building..."
 cmake --build . -j"${JOBS}"
 
 echo ""
 echo "=== Build complete ==="
-echo "Executable: ${BUILD_DIR}/crawler"
+echo "Executable: ${BUILD_DIR}/scrape-llm"

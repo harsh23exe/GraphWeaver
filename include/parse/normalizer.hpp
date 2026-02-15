@@ -95,11 +95,4 @@ private:
     static bool is_url_safe(char c);
 };
 
-// Helper function to convert URL to a safe filesystem path
-std::string url_to_filepath(
-    const std::string& url,
-    const std::string& base_domain,
-    const std::string& base_dir = ""
-);
-
 } // namespace docscraper::parse

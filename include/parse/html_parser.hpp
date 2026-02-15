@@ -24,6 +24,9 @@ public:
     std::vector<HTMLElement> select(const std::string& selector) const;
     std::optional<HTMLElement> select_first(const std::string& selector) const;
 
+    // Main text from body excluding script, style, noscript (for scrape-llm).
+    std::string main_text() const;
+
     const std::string& original_html() const { return original_html_; }
 
 private:

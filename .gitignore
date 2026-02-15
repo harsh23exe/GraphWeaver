@@ -1,10 +1,12 @@
-# Build directories
+# Build directories and artifacts
 build/
 build-*/
 cmake-build-*/
 out/
-build.MD
+*.user
+Install_manifest.txt
 
+# cursor
 cursor.logs
 
 # Compiled files
@@ -20,11 +22,16 @@ cursor.logs
 
 # CMake generated files
 CMakeCache.txt
+CMakeCache.txt.*
 CMakeFiles/
 cmake_install.cmake
 Makefile
+*.ninja
+*.ninja_deps
+*.ninja_log
 compile_commands.json
 _deps/
+CTestTestfile.cmake
 
 # Test output
 Testing/

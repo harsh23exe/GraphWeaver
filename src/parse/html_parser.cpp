@@ -144,6 +144,34 @@ std::optional<HTMLElement> HTMLDocument::select_first(const std::string& selecto
     return results.front();
 }
 
+static void collect_main_text(GumboNode* node, std::string& out) {
+    if (!node) return;
+    if (node->type == GUMBO_NODE_TEXT) {
+        out += node->v.text.text;
+        out += " ";
+        return;
+    }
+    if (node->type != GUMBO_NODE_ELEMENT) return;
+    GumboTag tag = node->v.element.tag;
+    if (tag == GUMBO_TAG_SCRIPT || tag == GUMBO_TAG_STYLE || tag == GUMBO_TAG_NOSCRIPT)
+        return;
+    GumboVector* children = &node->v.element.children;
+    for (size_t i = 0; i < children->length; ++i) {
+        collect_main_text(static_cast<GumboNode*>(children->data[i]), out);
+    }
+}
+
+std::string HTMLDocument::main_text() const {
+    std::string out;
+    if (!output_ || !output_->root) return out;
+    auto body_opt = select_first("body");
+    GumboNode* start = body_opt ? body_opt->node() : output_->root;
+    if (start)
+        collect_main_text(start, out);
+    while (!out.empty() && std::isspace(static_cast<unsigned char>(out.back()))) out.pop_back();
+    return out;
+}
+
 HTMLElement::HTMLElement(GumboNode* node)
     : node_(node) {}
 
